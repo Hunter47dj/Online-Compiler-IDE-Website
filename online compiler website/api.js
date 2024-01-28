@@ -4,7 +4,7 @@ const bodyP= require("body-parser")
 const compiler= require("compilex")
 var hackerRank = require('machinepack-hackerrank');
 const options= {stats: true}
-compiler.init(options)
+compiler.init(options) 
 
 app.use(bodyP.json())
 app.use("/codemirror-5.65.16",express.static("./codemirror-5.65.16"))
