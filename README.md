@@ -1,5 +1,8 @@
 # Online Code Compiler IDE 🚀
 
+![image](https://github.com/Hunter47dj/Online-Compiler-IDE-Website/assets/107131075/dba2ff9d-22bb-4f2e-9fff-cef00e30a7a0)
+
+
 Welcome to our Online Code Compiler IDE – a dynamic coding playground built with simplicity and functionality in mind! 🌟
 
 ## Features 🎨
@@ -11,6 +14,13 @@ Welcome to our Online Code Compiler IDE – a dynamic coding playground built wi
 - **Multi-Language Support:** Code fluently in three powerful languages – C++, Java, and Python. See your creations come to life instantly!
 
 - **Download Code:** Save your code masterpiece locally for future reference or offline editing.
+
+## Updates 🔄
+
+**Latest Change:**
+- **Minor Improvement:** The `compilex.js` file has been updated with a minor change in the flush operation. This enhancement makes the process of removing temporary files more efficient, especially when reloading the page.
+- ![image](https://github.com/Hunter47dj/Online-Compiler-IDE-Website/assets/107131075/1716a715-c29c-4f56-80d2-26517a33e736)
+
 
 ## Getting Started 🚀
 
