@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CODE COMPILER</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="codemirror-5.65.16/lib/codemirror.css">
+    <script src="codemirror-5.65.16/lib/codemirror.js"></script>
+    <script src="codemirror-5.65.16/mode/clike/clike.js"></script>
+
+    <!-- themes  -->
+    <link rel="stylesheet" href="codemirror-5.65.16/theme/dracula.css">
+    <link rel="stylesheet" href="codemirror-5.65.16/theme/rubyblue.css">
+    <link rel="stylesheet" href="codemirror-5.65.16/theme/base16-dark.css">
+    <link rel="stylesheet" href="codemirror-5.65.16/theme/blackboard.css">
+    <link rel="stylesheet" href="codemirror-5.65.16/theme/erlang-dark.css">
+    <link rel="stylesheet" href="codemirror-5.65.16/theme/neat.css">
+
+    <!-- code hint files -->
+    <link rel="stylesheet" href="codemirror-5.65.16/addon/hint/show-hint.css">
+    <script src="codemirror-5.65.16/addon/hint/show-hint.js"></script>
+    <script
+        src="C:/Users/DeLL/Desktop/PROJECTS/online compiler website/codemirror-5.65.16/addon/hint/css-hint.js"></script>
+
+
+    <script src="codemirror-5.65.16/addon/edit/closebrackets.js"></script>
+    <script src="codemirror-5.65.16/mode/python/python.js"></script>
+    <script src="/script.js"></script>
+    <!-- <script src="codemirror-5.65.16/addon/edit/matchbrackets.js"></script> -->
+
+</head>
+
+<body>
+    <div class="row m-3">
+        <div class="col">
+            <div class=" d-flex justify-content-between mb-2 bg-dark rounded p-2">
+                <div class="col-12 w-25">
+                    <label class="visually-hidden" for="inlineFormSelectPref">Preference</label>
+                    <select class="form-select" id="inlineFormSelectPref">
+                        <option selected value="Choose">Choose language...</option>
+                        <option value="Java">Java</option>
+                        <option value="Cpp">C++</option>
+                        <option value="Python">Python</option>
+                    </select>
+                </div>
+
+                <div>
+                    <button type="button" class="btn btn-success" id="themes" onclick="downloadFile()"><i
+                            class="bi bi-download"></i></button>
+                    <button type="button" class="btn btn-success" id="themes">Dharmendra Choudhary </button>
+                    <button type="button" id="run" class="btn btn-success">RUN <i class="bi bi-play-fill"></i></button>
+                </div>
+            </div>
+            <div>
+                <textarea type="text" id="editor" class="form-control" aria-label="First name"></textarea>
+            </div>
+        </div>
+        <div class="col d-flex flex-column rounded bg-dark px-4">
+            <div class="col-12 mt-2">
+                <label class="visually-hidden" for="themeSelect">Select Theme</label>
+                <select class="form-select" id="themeSelect">
+                    <option selected value="Choose">Choose themes...</option>
+                    <option value="rubyblue">rubyblue</option>
+                    <option value="blackboard">blackboard</option>
+                    <option value="base16-dark">dark</option>
+                    <option value="dracula">Dracula</option>
+                    <option value="erlang-dark">erlang-dark</option>
+                    <option value="neat">light</option>
+                    <!-- Add more themes as needed -->
+                </select>
+            </div>
+            <div class="h-50">
+                <label for="Input" class="text-light mt-4 mb-2 ">Input</label>
+                <textarea type="text" id="input" class="form-control h-75" aria-label="Last name"></textarea>
+            </div>
+            <div class="h-50">
+                <label for="Output" class="text-light mb-2">Output</label>
+                <textarea type="text" id="output" class="form-control h-75" aria-label="Last name"></textarea>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+<script>
+    var editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
+        mode: "text/x-c++src",
+        theme: "dracula",
+        lineNumbers: true,
+        autoCloseBrackets: true,
+        extraKeys: { "Ctrl-Space": "autocomplete" }
+    })
+
+    var themeSelect = document.getElementById("themeSelect");
+
+    themeSelect.addEventListener("change", function () {
+        var selectedTheme = themeSelect.value;
+        editor.setOption("theme", selectedTheme);
+    });
+    var width = window.innerWidth
+    var input = document.getElementById("input")
+    var output = document.getElementById("output")
+    var run = document.getElementById("run")
+
+
+    editor.setSize(0.7 * width, "600")
+
+    var option = document.getElementById("inlineFormSelectPref")
+    option.addEventListener("change", function () {
+        if (option.value == "Java") {
+            editor.setOption("mode", "text/x-java")
+        }
+        else if (option.value == "Python") {
+            editor.setOption("mode", "text/x-python")
+        }
+        else {
+            editor.setOption("mode", "text/x-c++src")
+        }
+    })
+
+    var code;   // this variable will be sent to the api
+    run.addEventListener("click", async function () {
+        code = {
+            code: editor.getValue(),
+            input: input.value,
+            lang: option.value
+        }
+        var oData = await fetch("http://localhost:8000/compile", {    // http://localhost:8000/compile this is the endpoint 
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(code)
+        })
+        var d = await oData.json()  // get the value from the api
+        output.value = d.output     // set the output value 
+    })
+
+    function downloadFile() {
+        // Get the content you want to save (replace this with your actual content)
+        var content = editor.getValue();
+
+        // Create a Blob from the content
+        var blob = new Blob([content], { type: "text/plain" });
+
+        // Create a download link
+        var downloadLink = document.createElement("a");
+        downloadLink.href = window.URL.createObjectURL(blob);
+        downloadLink.download = "example.txt"; // Set the file name
+
+        // Append the link to the body
+        document.body.appendChild(downloadLink);
+
+        // Trigger the download
+        downloadLink.click();
+
+        // Remove the link from the DOM
+        document.body.removeChild(downloadLink);
+    }
+</script>
+
+
+</html>
